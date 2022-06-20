@@ -13,9 +13,9 @@ on:
       - 'K8s/**'
 
 env:
-  GAR_INFO: us-central1-docker.pkg.dev/coe-srs-2022/coe-srs-gar-repo
+  GAR_INFO: us-central1-docker.pkg.dev/coe-srs/coe-srs-mywork
   APP_NAME: rs-shipping
-  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_NEW }}
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_ONE }}
   SONAR_PROJECT_KEY: 'coe-srs-shipping'
  
   
@@ -67,7 +67,7 @@ jobs:
       - name: Setup GCP Service Account
         uses: "google-github-actions/auth@v0"
         with:
-          credentials_json: "${{ secrets.GOOGLE_CREDENTIALS_P }}"
+          credentials_json: "${{ secrets.G_CREDENTIALS_N }}"
           # Below is a method of using Managed Identity Pools in GCP"
           #workload_identity_provider: "${{ secrets.workload_identity_provider }}"
           #service_account: 'triangulum-ctv-sa@triangulum-ctv-349103.iam.gserviceaccount.com'
