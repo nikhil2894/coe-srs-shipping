@@ -6,6 +6,7 @@ on:
     paths-ignore:
       - 'DCOS/**'
       - 'K8s/**'
+  pull_request:
        
   workflow_dispatch:
     paths-ignore:
@@ -106,53 +107,56 @@ jobs:
           gcloud info
           docker push "$GAR_INFO"/"$APP_NAME":"$TAG"
           #gcloud builds submit --tag "$GAR_INFO"/"$APP_NAME":"$TAG" .
-  # deploy-to-gcp-dev:
-  #   name: Deploy to GCP Dev Env
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 10
+  
+  deploy-to-gcp-dev:
+    name: Deploy to GCP Dev Env
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
     
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
                         
-  #     - name: Setup GCP Service Account
-  #       uses: "google-github-actions/auth@v0"
-  #       with:
-  #         credentials_json: "${{ secrets.GOOGLE_CREDENTIALS_P }}"
+      - name: Setup GCP Service Account
+        uses: "google-github-actions/auth@v0"
+        with:
+          credentials_json: "${{ secrets.GOOGLE_CREDENTIALS_P }}"
       
-  #     - name: Set up Cloud SDK
-  #       uses: 'google-github-actions/setup-gcloud@v0'
+      - name: Set up Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v0'
 
-  #     - name: Call Google Cloud Deploy
-  #       run: |
-  #         cd K8s
-  #         date_var=`date +%m%d%y-%H%M`
-  #         echo "date_var=$date_var" >> $GITHUB_ENV
-  #         gcloud deploy releases create rel-$date_var --delivery-pipeline=robot-shop-gcp --region=us-central1
+      # Berfore Running Google Cloud Deploy, Ensure the Setup is done
+      # gcloud deploy apply --file clouddeploy.yaml --region=us-central1 --project=coe-srs-2022
+      - name: Call Google Cloud Deploy
+        run: |
+          cd K8s
+          date_var=`date +%m%d%y-%H%M`
+          echo "date_var=$date_var" >> $GITHUB_ENV
+          gcloud deploy releases create rel-$date_var --delivery-pipeline=robot-shop-gcp --region=us-central1
       
-  #     - name: verify if the rollout is success
-  #       run: |
-  #         gcloud deploy rollouts describe rel-${{ env.date_var }}-to-dev-0001 --release=rel-${{ env.date_var }} --delivery-pipeline=robot-shop-gcp --region=us-central1
-  #         sleep 60
-  #         counter=0
-  #         while [ $counter -lt 20 ]
-  #         do
-  #         export some_val=`gcloud deploy rollouts describe rel-${{ env.date_var }}-to-dev-0001 --release=rel-${{ env.date_var }} --delivery-pipeline=robot-shop-gcp --region=us-central1 | grep state: | cut -f2 -d: | cut -d' ' -f2`
-  #         if [ "$some_val" == "IN_PROGRESS" ]
-  #         then
-  #           echo "Deployment in Progress Time is: `date`"
-  #             sleep 30
-  #             continue
-  #         elif [ "$some_val" == "SUCCEEDED" ]
-  #         then
-  #             [echo "Deployment is Succeeded Time is: `date`	"]
-  #             exit 0
-  #         else
-  #           echo "Deployment Failed Time is: `date`"
-  #             exit 1
-  #         fi
-  #         counter=$(( $counter + 1))
-  #         done
+      - name: verify if the rollout is success
+        run: |
+          gcloud deploy rollouts describe rel-${{ env.date_var }}-to-dev-0001 --release=rel-${{ env.date_var }} --delivery-pipeline=robot-shop-gcp --region=us-central1
+          sleep 60
+          counter=0
+          while [ $counter -lt 20 ]
+          do
+          export some_val=`gcloud deploy rollouts describe rel-${{ env.date_var }}-to-dev-0001 --release=rel-${{ env.date_var }} --delivery-pipeline=robot-shop-gcp --region=us-central1 | grep state: | cut -f2 -d: | cut -d' ' -f2`
+          if [ "$some_val" == "IN_PROGRESS" ]
+          then
+            echo "Deployment in Progress Time is: `date`"
+              sleep 30
+              continue
+          elif [ "$some_val" == "SUCCEEDED" ]
+          then
+              [echo "Deployment is Succeeded Time is: `date`	"]
+              exit 0
+          else
+            echo "Deployment Failed Time is: `date`"
+              exit 1
+          fi
+          counter=$(( $counter + 1))
+          done
 
   # run-k6-tests:
   #   name: K6 Load Test

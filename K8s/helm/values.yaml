@@ -1,0 +1,4 @@
+image:
+  repo: us-central1-docker.pkg.dev/coe-srs-2022/coe-srs-gar-repo
+  version: 1.0.0
+  pullPolicy: IfNotPresent

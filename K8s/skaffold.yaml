@@ -1,0 +1,54 @@
+apiVersion: skaffold/v2beta26
+kind: Config
+metadata:
+  name: skaffold-deploy-profiles
+profiles:
+  - name: dev
+    deploy:
+      helm:
+        releases:
+        - name: dev
+          namespace: srs-dev
+          chartPath: helm
+          recreatePods: false
+          valuesFiles:
+            - helm/values.yaml
+          imageStrategy:
+            helm: {}
+  - name: prod
+    deploy:
+      helm:
+        releases:
+        - name: prod
+          namespace: srs-prod
+          chartPath: helm
+          recreatePods: false
+          valuesFiles:
+            - helm/values.yaml
+          imageStrategy:
+            helm: {}
+ 
+
+# build:
+#     artifacts:
+#       - image: us-central1-docker.pkg.dev/triangulum-ctv-349103/telus-robot-shop
+# deploy:
+#   helm:
+#     releases:
+#     - name: dev
+#       chartPath: helm
+#       namespace: robot-shop-dev
+#       recreatePods: false
+#       valuesFiles:
+#         - helm/values.yaml
+#       imageStrategy:
+#         helm: {}
+#     - name: prod
+#       chartPath: helm
+#       namespace: robot-shop-prod
+#       recreatePods: false
+#       valuesFiles:
+#         - helm/values.yaml
+#       imageStrategy:
+#         helm: {}
+  
