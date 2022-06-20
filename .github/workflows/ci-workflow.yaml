@@ -120,7 +120,7 @@ jobs:
       - name: Setup GCP Service Account
         uses: "google-github-actions/auth@v0"
         with:
-          credentials_json: "${{ secrets.GOOGLE_CREDENTIALS_P }}"
+          credentials_json: "${{ secrets.G_CREDENTIALS_N }}"
       
       - name: Set up Cloud SDK
         uses: 'google-github-actions/setup-gcloud@v0'
