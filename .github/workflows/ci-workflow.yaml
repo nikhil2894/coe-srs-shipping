@@ -17,7 +17,7 @@ env:
   GAR_INFO: us-central1-docker.pkg.dev/coe-srs/coe-srs-mywork
   APP_NAME: rs-shipping
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_TWO }}
-  SONAR_PROJECT_KEY: 'coe-srs-shipping 1'
+  SONAR_PROJECT_KEY: 'coe-srs-shipping-1'
  
   
 jobs:  
