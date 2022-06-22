@@ -16,7 +16,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<sonar.host.url>http://34.125.133.150:9000</sonar.host.url>
+		<sonar.host.url>http://34.125.78.123:9000</sonar.host.url>
 		<sonar.coverage.jacoco.xmlReportPaths>
     			target/site/jacoco-aggregate/jacoco.xml
   		</sonar.coverage.jacoco.xmlReportPaths>

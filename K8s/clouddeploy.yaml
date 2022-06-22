@@ -17,7 +17,7 @@ metadata:
  name: dev
 description: development namespace
 gke:
- cluster: projects/coe-srs-2022/locations/us-central1-c/clusters/srs-cluster
+ cluster: projects/coe-srs/locations/us-central1-c/clusters/cluster-1
 
 ---
 
@@ -28,4 +28,4 @@ metadata:
 description: production cluster
 requireApproval: true
 gke:
- cluster: projects/coe-srs-2022/locations/us-central1-c/clusters/srs-cluster
+ cluster: projects/coe-srs/locations/us-central1-c/clusters/cluster-1
